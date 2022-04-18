@@ -19,7 +19,7 @@ val appModule = module {
 
     viewModel<WorkSpaceViewModel> {
         WorkSpaceViewModel(
-            getChillSpaceStateUseCase = get(),
+            getWorkSpaceStateUseCase = get(),
             changeBrightUseCase = get(),
             changeBusyStatusUseCase = get(),
             changeLightWarmUseCase = get(),

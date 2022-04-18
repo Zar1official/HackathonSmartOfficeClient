@@ -14,16 +14,16 @@ sealed class BottomBarScreen(
     object WorkSpace :
         BottomBarScreen(
             route = PresentationConstants.workSpaceScreenRoute,
-            title = R.string.app_name,
+            title = R.string.work_space_title,
             icon = R.drawable.ic_work_space,
-            contentDescription = R.string.app_name
+            contentDescription = R.string.work_space_title
         )
 
     object ChillSpace :
         BottomBarScreen(
             route = PresentationConstants.chillSpaceScreenRoute,
-            title = R.string.app_name,
+            title = R.string.chill_space_title,
             icon = R.drawable.ic_chill_space,
-            contentDescription = R.string.app_name
+            contentDescription = R.string.chill_space_title
         )
 }

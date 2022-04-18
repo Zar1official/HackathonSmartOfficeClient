@@ -1,33 +1,52 @@
 package ru.zar1official.hackathon_final.presentation.screens
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import ru.zar1official.hackathon_final.presentation.screens.chill.ChillSpaceViewModel
-
-@Composable
-fun ChillSpaceScreen(viewModel: ChillSpaceViewModel) {
-    val state = viewModel.state.observeAsState("0")
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.Blue),
-        contentAlignment = Alignment.Center
-    ) {
-        Button(onClick = {
-            viewModel.state.value = "fkf"
-        }) {
-            Text(text = "Click")
-        }
-
-        Text(text = state.value)
-
-    }
-}
+//@Composable
+//@Preview
+//fun ChillSpaceScreen() {
+//    Box(
+//        modifier = Modifier
+//            .fillMaxSize(),
+//        contentAlignment = Alignment.Center
+//    ) {
+//        LazyColumn(
+//            verticalArrangement = Arrangement.Center,
+//            contentPadding = PaddingValues(
+//                top = 5.dp,
+//                bottom = 5.dp,
+//                start = 10.dp,
+//                end = 10.dp
+//            ),
+//            content = {
+//                item {
+//                    Card(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(200.dp)
+//                            .background(color = Color.White),
+//                        shape = RoundedCornerShape(10.dp),
+//                        elevation = 2.dp
+//                    ) {
+//                        Row(
+//                            verticalAlignment = Alignment.CenterVertically
+//                        ) {
+//                            Image(
+//                                painter = painterResource(id = R.drawable.ic_chair),
+//                                contentDescription = ""
+//                            )
+//
+//                            DropDownMenu(
+//                                suggestions = listOf(
+//                                    MassageMode.None,
+//                                    MassageMode.Vibration,
+//                                    MassageMode.AirCompression
+//                                ),
+//                                modifier = Modifier.padding(20.dp)
+//                            )
+//
+//                        }
+//                    }
+//                }
+//            }
+//        )
+//    }
+//}

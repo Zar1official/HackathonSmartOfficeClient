@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 data class WorkSpaceEntity(
     val uId: Long,
     val microclimateType: Int,
-    val lightControlsEntity: LightControlsEntity,
-    val busyStatus: Long
+    val lightControls: LightControlsEntity,
+    val busyStatus: Boolean
 )
