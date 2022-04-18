@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Hackathon_Final</string>
+    <string name="work_space_title">Work space</string>
+    <string name="chill_space_title">Chill space</string>
+</resources>
