@@ -13,8 +13,8 @@ class ChangeBrightUseCase(
         withContext(coroutineDispatcher) {
             kotlin.runCatching { repository.changeLightBright(uId, bright) }
                 .onFailure {
-                    return@withContext PostModel.Success
+                    return@withContext PostModel.Error
                 }
-            return@withContext PostModel.Error
+            return@withContext PostModel.Success
         }
 }

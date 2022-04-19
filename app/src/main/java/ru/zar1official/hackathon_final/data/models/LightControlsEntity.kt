@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LightControlsEntity(
     val brightControl: Int,
-    val lightControl: Int
+    val warmControl: Int
 )

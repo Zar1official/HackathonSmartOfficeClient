@@ -9,16 +9,20 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import org.koin.androidx.compose.getViewModel
+import ru.zar1official.hackathon_final.R
 import ru.zar1official.hackathon_final.presentation.screens.main.BottomBarScreen
 
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-    Scaffold(bottomBar = {
+    val scaffoldState = rememberScaffoldState()
+
+    Scaffold(topBar = {
+        TopAppBar(title = { Text(text = stringResource(id = R.string.app_name)) })
+    }, bottomBar = {
         BottomBar(navController = navController)
-    }) {
-        BottomNavGraph(navController = navController)
+    }, scaffoldState = scaffoldState) {
+        BottomNavGraph(navController = navController, scaffoldState = scaffoldState)
     }
 }
 
@@ -47,15 +51,15 @@ fun BottomBar(navController: NavController) {
 }
 
 @Composable
-fun BottomNavGraph(navController: NavHostController) {
+fun BottomNavGraph(navController: NavHostController, scaffoldState: ScaffoldState) {
     NavHost(navController = navController, startDestination = BottomBarScreen.WorkSpace.route) {
         composable(
             route = BottomBarScreen.WorkSpace.route,
         ) {
-            WorkSpaceScreen()
+            WorkSpaceScreen(scaffoldState = scaffoldState)
         }
         composable(route = BottomBarScreen.ChillSpace.route) {
-            ChillSpaceScreen(viewModel = getViewModel())
+            ChillSpaceScreen(scaffoldState = scaffoldState)
         }
     }
 }
