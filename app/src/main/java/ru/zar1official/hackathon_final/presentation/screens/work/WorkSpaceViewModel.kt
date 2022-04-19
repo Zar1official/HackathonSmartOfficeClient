@@ -1,6 +1,5 @@
 package ru.zar1official.hackathon_final.presentation.screens.work
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,12 +17,12 @@ class WorkSpaceViewModel(
     private val changeBrightUseCase: ChangeBrightUseCase,
     private val changeBusyStatusUseCase: ChangeBusyStatusUseCase,
     private val changeMicroclimateTypeUseCase: ChangeMicroclimateTypeUseCase,
-    private val changeLightWarmUseCase: ChangeLightWarmUseCase
+    private val changeLightWarmUseCase: ChangeLightWarmUseCase,
+    private val readWUIdUseCase: ReadWUIdUseCase
 ) : ViewModel() {
     val event = Channel<ScreenEvent>(0)
 
-    private val wUID: Long = 100L
-    private val cUID: Long = 0L
+    private var wUID: Long = 1L
 
     private val _isLoaded = MutableLiveData<Boolean>()
     val isLoaded: LiveData<Boolean> = _isLoaded
@@ -51,7 +50,7 @@ class WorkSpaceViewModel(
         }
     }
 
-    fun onChangeBusyStatusUseCase() {
+    fun onChangeBusyStatus() {
         val next = !(busyStatus.value ?: false)
         viewModelScope.launch {
             when (changeBusyStatusUseCase(wUID, next)) {
@@ -62,27 +61,30 @@ class WorkSpaceViewModel(
     }
 
     fun onGetWorkSpaceState() {
-        viewModelScope.launch {
-            when (val state = getWorkSpaceStateUseCase(wUID)) {
-                is GetModel.Error -> showLoadingError()
-                is GetModel.Success -> {
-                    val data = state.data
-                    _microclimateType.value = when (data.microclimateType) {
-                        0 -> MicroclimateType.Comfortable
-                        1 -> MicroclimateType.Cooling
-                        else -> MicroclimateType.Heating
+        if (isLoaded.value != true) {
+            viewModelScope.launch {
+                val id = readWUIdUseCase.invoke()
+                wUID = id
+                when (val state = getWorkSpaceStateUseCase(wUID)) {
+                    is GetModel.Error -> showLoadingError()
+                    is GetModel.Success -> {
+                        val data = state.data
+                        _microclimateType.value = when (data.microclimateType) {
+                            0 -> MicroclimateType.Comfortable
+                            1 -> MicroclimateType.Cooling
+                            else -> MicroclimateType.Heating
+                        }
+                        _busyStatus.value = data.busyStatus
+                        _isLoaded.value = true
                     }
-                    _busyStatus.value = data.busyStatus
-                    _isLoaded.value = true
                 }
             }
         }
     }
 
-    fun onSaveBright() {
+    fun onSaveBright(value: Int) {
         viewModelScope.launch {
-            val brightValue = bright.value ?: 60
-            if (changeBrightUseCase(wUID, brightValue) is PostModel.Error) {
+            if (changeBrightUseCase(wUID, value) is PostModel.Error) {
                 showError()
             }
         }
@@ -92,10 +94,9 @@ class WorkSpaceViewModel(
         _bright.value = bright
     }
 
-    fun onSaveWarm() {
+    fun onSaveWarm(value: Int) {
         viewModelScope.launch {
-            val warmValue = bright.value ?: 3000
-            if (changeLightWarmUseCase(wUID, warmValue) is PostModel.Error) {
+            if (changeLightWarmUseCase(wUID, value) is PostModel.Error) {
                 showError()
             }
         }
@@ -110,12 +111,6 @@ class WorkSpaceViewModel(
     }
 
     private fun showLoadingError() {
-        Log.d("error", "rr")
         event.trySend(ScreenEvent.LoadingError)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        Log.d("cleared", "true")
     }
 }

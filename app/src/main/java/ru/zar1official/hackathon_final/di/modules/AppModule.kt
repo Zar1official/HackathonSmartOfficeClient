@@ -13,7 +13,8 @@ val appModule = module {
     viewModel<ChillSpaceViewModel> {
         ChillSpaceViewModel(
             getChillSpaceStateUseCase = get(),
-            changeMassageModeUseCase = get()
+            changeMassageModeUseCase = get(),
+            readCUIdUseCase = get()
         )
     }
 
@@ -23,7 +24,8 @@ val appModule = module {
             changeBrightUseCase = get(),
             changeBusyStatusUseCase = get(),
             changeLightWarmUseCase = get(),
-            changeMicroclimateTypeUseCase = get()
+            changeMicroclimateTypeUseCase = get(),
+            readWUIdUseCase = get()
         )
     }
 }

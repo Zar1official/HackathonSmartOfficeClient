@@ -36,7 +36,7 @@ fun BottomBar(navController: NavController) {
                 onClick = {
                     navController.navigate(screen.route) {
                         launchSingleTop = true
-                        popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                        popUpTo(screen.route)
                     }
                 },
                 icon = {
@@ -59,7 +59,7 @@ fun BottomNavGraph(navController: NavHostController, scaffoldState: ScaffoldStat
             WorkSpaceScreen(scaffoldState = scaffoldState)
         }
         composable(route = BottomBarScreen.ChillSpace.route) {
-            ChillSpaceScreen()
+            ChillSpaceScreen(scaffoldState = scaffoldState)
         }
     }
 }

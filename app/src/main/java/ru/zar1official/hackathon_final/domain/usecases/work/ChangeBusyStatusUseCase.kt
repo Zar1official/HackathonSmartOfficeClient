@@ -13,8 +13,8 @@ class ChangeBusyStatusUseCase(
         withContext(coroutineDispatcher) {
             kotlin.runCatching { repository.changeBusyStatus(uId, busy) }
                 .onFailure {
-                    return@withContext PostModel.Success
+                    return@withContext PostModel.Error
                 }
-            return@withContext PostModel.Error
+            return@withContext PostModel.Success
         }
 }

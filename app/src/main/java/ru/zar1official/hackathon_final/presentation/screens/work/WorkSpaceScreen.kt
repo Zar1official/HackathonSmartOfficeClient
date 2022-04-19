@@ -20,6 +20,7 @@ import kotlinx.coroutines.channels.consumeEach
 import org.koin.androidx.compose.getViewModel
 import ru.zar1official.hackathon_final.R
 import ru.zar1official.hackathon_final.domain.models.MicroclimateType
+import ru.zar1official.hackathon_final.presentation.components.CustomButton
 import ru.zar1official.hackathon_final.presentation.screens.events.ScreenEvent
 import ru.zar1official.hackathon_final.presentation.screens.work.WorkSpaceViewModel
 import ru.zar1official.hackathon_final.presentation.screens.work.components.ButtonGroup
@@ -38,7 +39,6 @@ fun WorkSpaceScreen(
     val snackBarErrorMessage = stringResource(id = R.string.error_message)
     val snackBarErrorLabel = stringResource(id = R.string.error_label)
 
-    Scaffold(scaffoldState = scaffoldState) {
         Box(
             modifier = Modifier
                 .fillMaxSize(),
@@ -80,13 +80,49 @@ fun WorkSpaceScreen(
                             Card(
                                 modifier = Modifier
                                     .fillMaxWidth()
+                                    .height(60.dp)
+                                    .background(color = Color.White),
+                                shape = RoundedCornerShape(10.dp),
+                                elevation = 2.dp
+                            ) {
+                                Row(
+                                    horizontalArrangement = Arrangement.End,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.padding(end = 10.dp)
+                                ) {
+                                    Text(
+                                        text = "Status: " + if (busyStatus.value) "busy" else "free",
+                                        textAlign = TextAlign.Center,
+                                        fontWeight = FontWeight.SemiBold,
+                                        fontSize = 18.sp,
+                                    )
+                                    Spacer(modifier = Modifier.width(25.dp))
+                                    CustomButton(
+                                        backgroundColor = if (busyStatus.value) Color.Red else Color.Green,
+                                        contentDescription = "",
+                                        contentPaddingValues = PaddingValues(10.dp)
+                                    ) {
+                                        viewModel.onChangeBusyStatus()
+                                    }
+                                }
+                            }
+                        }
+
+                        item {
+                            Spacer(modifier = Modifier.height(45.dp))
+                        }
+
+                        item {
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
                                     .height(150.dp)
                                     .background(color = Color.White),
                                 shape = RoundedCornerShape(10.dp),
                                 elevation = 2.dp
                             ) {
                                 Text(
-                                    text = stringResource(id = R.string.temp_control_label),
+                                    text = stringResource(id = R.string.microclimate_control_label),
                                     textAlign = TextAlign.Center,
                                     fontWeight = FontWeight.SemiBold,
                                     fontSize = 18.sp,
@@ -115,9 +151,7 @@ fun WorkSpaceScreen(
                             }
                         }
 
-                        item {
-                            Spacer(modifier = Modifier.height(45.dp))
-                        }
+                        item { Spacer(modifier = Modifier.height(45.dp)) }
 
                         item {
                             Card(
@@ -134,7 +168,7 @@ fun WorkSpaceScreen(
                                 ) {
 
                                     Text(
-                                        text = "Light control",
+                                        text = stringResource(id = R.string.light_control_label),
                                         textAlign = TextAlign.Center,
                                         fontWeight = FontWeight.SemiBold,
                                         fontSize = 18.sp,
@@ -143,7 +177,7 @@ fun WorkSpaceScreen(
                                         verticalArrangement = Arrangement.spacedBy(15.dp),
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
-                                        Row() {
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
                                             Slider(
                                                 modifier = Modifier.requiredWidth(200.dp),
                                                 value = bright.value.toFloat(),
@@ -155,7 +189,7 @@ fun WorkSpaceScreen(
                                                     activeTrackColor = Color.Black
                                                 ),
                                                 onValueChangeFinished = {
-                                                    viewModel.onSaveBright()
+                                                    viewModel.onSaveBright(bright.value)
                                                 },
                                                 valueRange = 0f..100f
                                             )
@@ -165,7 +199,7 @@ fun WorkSpaceScreen(
                                             Text(text = "Bright: ${bright.value}", fontSize = 20.sp)
                                         }
 
-                                        Row() {
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
                                             Slider(
                                                 modifier = Modifier.requiredWidth(200.dp),
                                                 value = warm.value.toFloat(),
@@ -177,7 +211,7 @@ fun WorkSpaceScreen(
                                                     activeTrackColor = Color.Black
                                                 ),
                                                 onValueChangeFinished = {
-                                                    viewModel.onSaveWarm()
+                                                    viewModel.onSaveWarm(warm.value)
                                                 },
                                                 valueRange = 1800f..6600f
                                             )
@@ -200,5 +234,4 @@ fun WorkSpaceScreen(
                 viewModel.onGetWorkSpaceState()
             }
         }
-    }
 }
