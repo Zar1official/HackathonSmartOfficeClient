@@ -77,6 +77,11 @@ class ChillSpaceViewModel(
         _isPlaying.value = !value
     }
 
+    /*Not yet implemented*/
+    fun onUpdateSong() {
+
+    }
+
     fun onChangeMassageMode(mode: MassageMode) {
         viewModelScope.launch {
             when (changeMassageModeUseCase(cUID, mode)) {

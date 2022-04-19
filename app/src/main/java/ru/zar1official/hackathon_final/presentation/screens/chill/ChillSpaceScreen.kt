@@ -1,5 +1,7 @@
 package ru.zar1official.hackathon_final.presentation.screens
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -185,9 +187,17 @@ fun ChillSpaceScreen(
 
                                 Spacer(modifier = Modifier.width(10.dp))
 
+                                val pickSongLauncher = rememberLauncherForActivityResult(
+                                    ActivityResultContracts.GetContent()
+                                ) { audioUri ->
+                                    if (audioUri != null) {
+                                        viewModel.onUpdateSong()
+                                    }
+                                }
+
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Text(text = currentSong.value, fontSize = 18.sp)
-                                    IconButton(onClick = { viewModel.onLoadSong() }) {
+                                    IconButton(onClick = { pickSongLauncher.launch("audio/*") }) {
                                         Icon(
                                             modifier = Modifier.fillMaxSize(),
                                             imageVector = Icons.Outlined.Download,
